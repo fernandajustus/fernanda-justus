@@ -1,0 +1,53 @@
+import React, { useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+
+// tamanho de cada célula DO GRID
+const CELL_SIZE = 20;
+
+// Define o GRID 15X15
+const GRID_SIZE = 15;
+
+// Posição inicial do Personagem
+const INITIAL_SNAKE = [{ x: 7, y: 7 }];
+
+// Direção inicial do personagem (SuBindo)
+const INITIAL_DIRECTION = { x: 0, y: -1 };
+
+export default function SnakeGame() {
+    // estado que guarda a posição de celulas do snacke
+    const [snake, setSnake] = useState(INITIAL_SNAKE);
+
+    // estado que quando e Diresão que o snake está indo
+    const [direction, setDirection] = useState(INITIAL_DIRECTION);
+
+    // estado que verifica se o jogo acabou
+    const [isGameOver, setIsGameOver] = useState(false);
+
+    // refrencia para armazenar o intenvero de tempo que a snake se move
+    const moveInterval = useRef(null);
+
+    // função De movimento
+    function moveSnake() {
+        setSnake(prev => {
+            const newHead = {
+                x: prev[0].x + direction.x,
+                y: prev[0].y + direction.y,
+            };
+
+            // colisão na parede Direita ou esquerda
+            if (
+                newHead.x < 0 || 
+                newHead.x >= GRID_SIZE || 
+                newHead.y < 0 || 
+                newHead.y >= GRID_SIZE ||
+                // verifica se Bateu nas Bordas ou se bateu no próprio corpo
+                prev.some(segment => segment.x === newHead.x && segment.y === newHead.y)
+            ) {
+                setIsGameOver(true);
+                clearInterval(moveInterval.current);
+                Alert.alert('Fim de Jogo', 'Você Bateu!');
+                return prev;
+        };
+    })
+
+
