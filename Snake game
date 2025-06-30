@@ -49,5 +49,9 @@ export default function SnakeGame() {
                 return prev;
         };
     })
-
+// criar uma nova array da cobrinha, com a nova cabeça na frente
+const NewSnake=[NewHead...prev],
+newSnake.pop();
+//atualizar a cobrinha com a nova posição dela 
+return newSnake
 
