@@ -54,4 +54,45 @@ const NewSnake=[NewHead...prev],
 newSnake.pop();
 //atualizar a cobrinha com a nova posição dela 
 return newSnake
+})
+}
+// criar o loop do jogo principal
+useEffect(() => {
+  moveIntervalCurrent = setInterval(() => {
+    if (!gameOver) moveSnake(); // move a snake
+  }, 200); // se move a cada 200ms
+
+  // Limpar o intervalo se a direção mudar
+  return () => clearInterval(moveIntervalCurrent);
+}, [direction]);
+
+const renderCell = (x, y) => {
+  // Verificar se a posição é a mesma da cobra 
+  const isSnake = snake.some(cell => cell.x === x && cell.y === y);
+
+  return (
+    <View
+      key={`s${x}-s${y}`}
+      style={[styles.cell, isSnake && styles.snake]}
+    />
+  );
+};
+
+const renderGrid = () => {
+  let rows = [];
+
+  // Variável condição incremento
+  for (let y = 0; y < GRID_SIZE; y++) {
+    let row = [];
+
+    for (let x = 0; x < GRID_SIZE; x++) {
+      row.push(renderCell(x, y));
+    }
+    rows.push(
+      <View key={y} style={styles.row}>
+        {row}
+      </View>
+    );
+  }
+  return rows
 
